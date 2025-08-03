@@ -14,9 +14,6 @@ public class Order {
     
     private String description;
 
-    @Version
-    private Integer version;
-
     public Order() {}
 
     public Order(String status,String description) {

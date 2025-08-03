@@ -1,4 +1,5 @@
-package com.retailordersystem.controller;
+package com.retailordersystem.api;
+
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,26 +8,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.Duration;
-
-import com.retailordersystem.constants.DockerImageConstants;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.awaitility.Awaitility;
-import org.testcontainers.utility.DockerImageName;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.retailordersystem.model.Order;
@@ -34,14 +23,10 @@ import com.retailordersystem.repository.OrderRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers
-
-public class OrderControllerWithTestContainerIT {
-
-    private static final Integer TIMEOUT = 120;
-    private static final Logger logger = LoggerFactory.getLogger(OrderControllerWithTestContainerIT.class);
-
-    @Autowired
+@DirtiesContext
+public class OrderApiMockTest {
+	
+	@Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -50,33 +35,15 @@ public class OrderControllerWithTestContainerIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Container
-    static PostgreSQLContainer<?> postgres =
-            new PostgreSQLContainer<>(DockerImageName.parse(DockerImageConstants.POSTGRES_IMAGE));
-
-    @BeforeAll
-    static void startContainers() {
-        Awaitility.await().atMost(Duration.ofSeconds(TIMEOUT)).until(postgres::isRunning);
-        logger.info("PostgreSQL is up and running!");
-    }
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-
-    }
-
 
     @Test
-    public void shouldCreateOrderAndPublishEvent() throws Exception {
+    public void shouldCreateOrder() throws Exception {
 
         Order order = new Order("DUMMY_STATUS", "Order from Integration Test");
 
         MvcResult mvcResult = mockMvc.perform(post("/orders")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(order)))
+                        .content(objectMapper.writeValueAsString(order))) 
                 .andExpect(status().isCreated())
                 .andExpect(content().string(containsString("DUMMY_STATUS")))
                 .andReturn();
@@ -87,5 +54,5 @@ public class OrderControllerWithTestContainerIT {
         Order savedOrder = orderRepository.findById(orderId).orElseThrow();
         assertThat(savedOrder.getStatus()).isEqualTo("DUMMY_STATUS");
     }
-
+    
 }

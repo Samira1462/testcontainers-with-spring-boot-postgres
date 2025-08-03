@@ -1,4 +1,4 @@
-package com.retailordersystem.constants;
+package com.retailordersystem.api.constants;
 
 /**
  * Defines Docker image names used across the application.

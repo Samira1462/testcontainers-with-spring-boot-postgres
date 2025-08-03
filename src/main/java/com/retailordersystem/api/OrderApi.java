@@ -1,4 +1,4 @@
-package com.retailordersystem.controller;
+package com.retailordersystem.api;
 
 import java.util.List;
 
@@ -18,11 +18,11 @@ import com.retailordersystem.service.OrderService;
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController {
+public class OrderApi {
 
     private final OrderService orderService;
 
-    public OrderController(OrderService orderService) {
+    public OrderApi(OrderService orderService) {
         this.orderService = orderService;
     }
 
