@@ -13,7 +13,7 @@ This project is a Spring Boot application that provides a RESTful API for managi
 
 ## Technologies Used
 
-* Java 21 or higher
+* Java 21 
 * Spring Boot
 * Spring Data JPA
 * PostgreSQL
@@ -26,7 +26,7 @@ This project is a Spring Boot application that provides a RESTful API for managi
 
 ### Prerequisites
 
-* Java 17 or higher
+* Java 21 or higher
 * Maven 3.6.0 or higher
 * Docker 
 * PostgreSQL (if you want to run the application outside Docker)
