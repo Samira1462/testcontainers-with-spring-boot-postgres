@@ -1,7 +1,7 @@
 # Retail Order System with PostgreSQL
 
 This project is a Spring Boot application that provides a RESTful API for managing retail orders, using PostgreSQL as the database.
-
+The application is designed to demonstrate the use of Testcontainers for integration testing with a PostgreSQL database, along with Docker for easy deployment.
 ## Features
 
 * Create, retrieve, update, and delete orders.

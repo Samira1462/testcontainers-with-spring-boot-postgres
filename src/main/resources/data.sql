@@ -1,0 +1,7 @@
+
+TRUNCATE TABLE orders RESTART IDENTITY CASCADE;
+
+
+INSERT INTO orders (status,description) VALUES
+    ('PENDING','DUMMY ORDER'),
+    ('PENDING','DUMMY ORDER');

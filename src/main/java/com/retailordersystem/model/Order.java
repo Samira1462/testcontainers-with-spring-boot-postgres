@@ -1,0 +1,54 @@
+package com.retailordersystem.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "orders") 
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String status;
+    
+    private String description;
+
+    @Version
+    private Integer version;
+
+    public Order() {}
+
+    public Order(String status,String description) {
+        this.status = status;
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+    
+    
+}
